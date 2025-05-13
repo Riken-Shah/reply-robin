@@ -1,0 +1,10 @@
+# Secrets
+credentials.json
+token.json
+
+# OS generated files
+*.DS_Store
+
+# Cache files
+__pycache__
+*.pyc

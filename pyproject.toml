@@ -1,0 +1,27 @@
+[project]
+name = "automated_email_matching_and_drafting"
+version = "0.1.0"
+description = "automated_email_matching_and_drafting using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "crewai[tools]>=0.119.0,<1.0.0",
+    "dotenv>=0.9.9",
+    "google-api-python-client>=2.169.0",
+    "google-auth-oauthlib>=1.2.2",
+    "weaviate-client>=4.14.3",
+]
+
+[project.scripts]
+automated_email_matching_and_drafting = "automated_email_matching_and_drafting.main:run"
+run_crew = "automated_email_matching_and_drafting.main:run"
+train = "automated_email_matching_and_drafting.main:train"
+replay = "automated_email_matching_and_drafting.main:replay"
+test = "automated_email_matching_and_drafting.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
