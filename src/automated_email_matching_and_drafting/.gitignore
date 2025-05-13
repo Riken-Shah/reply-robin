@@ -1,0 +1,6 @@
+# Secrets
+.env
+token.json
+
+# Virtual environment
+.venv

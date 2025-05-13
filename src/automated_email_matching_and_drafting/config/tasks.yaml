@@ -1,0 +1,33 @@
+---
+rag_search_task:
+  description: Perform a RAG search using the subject and body from {new_unanswered_email}
+    over the repository {last_1000_emails}, using the retrieve_similar_emails_with_weaviate function (Weaviate backend) from emd.py. Use contextual matching to identify similar
+    emails that relate to the query.
+  expected_output: A list of relevant past emails that provide context and insights
+    for drafting a reply.
+  async_execution: false
+  agent: rag_search_expert
+dynamic_data_query_task:
+  description: Analyze the combined context of {new_unanswered_email} and the results from rag_search_task.
+    If the RAG context already provides a relevant answer or sufficiently addresses the user's query,
+    proceed directly to email drafting without asking the user for any additional information.
+    Only prompt the user if there is a clear, specific, and actionable missing detail that cannot be inferred
+    from the RAG context. Do not ask for information that is already present in the retrieved context.
+  expected_output: Either a confirmation that no additional dynamic data is required (because the answer is present in the RAG context),
+    or, if absolutely necessary, a set of user-provided clarifications as {dynamic_data}. Avoid asking the question 
+    if the answer is already present in the RAG context.
+  async_execution: false
+  agent: dynamic_data_inquirer
+  context:
+    - rag_search_task
+email_drafting_task:
+  description: Using the details from {new_unanswered_email}, the similar email context
+    from rag_search_task, style guidelines, and any additional
+    information provided from dynamic_data_query_task, generate a draft reply email
+    that aligns with the user's tone and clearly addresses the inquiry.
+  expected_output: A complete draft reply email in the user's style, ready for review.
+  context:
+  - rag_search_task
+  - dynamic_data_query_task
+  async_execution: false
+  agent: email_draft_generator
